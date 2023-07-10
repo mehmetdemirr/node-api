@@ -1,16 +1,7 @@
-require("dotenv").config();
 const express = require("express");
-const mongoose= require("mongoose");
-const Product = require("./models/product_model")
 
-const MONGO_URL = process.env.MONGO_URL;
-const PORT = process.env.PORT || 3000;
-
-const app = express();
-
-app.use(express.json());
-
-//routes
+const router = express.Router();
+//get 
 app.get("/product", async(request,response)=>{
     try{
         const products = await Product.find({});
@@ -20,6 +11,7 @@ app.get("/product", async(request,response)=>{
     }
 });
 
+//get details
 app.get("/product/:id",async(request,response)=>{
     try {
         const {id} = request.params;
@@ -31,6 +23,7 @@ app.get("/product/:id",async(request,response)=>{
     }
 });
 
+//post
 app.post("/product",async(request,response)=>{
     try {
         const product = await Product.create(request.body);
@@ -70,20 +63,4 @@ app.delete("/product/:id",async(request,response)=>{
         console.log("Hata:"+ error.message);
         response.status(500).json({message:"hatalı istek"});
     }
-});
-
-app.get("/",(request,response,)=>{
-    response.send("hello node js ");
-});
-
-
-mongoose
-.connect(MONGO_URL)
-.then(()=>{
-    console.log("Database connected");
-    app.listen(PORT,()=>{
-        console.log(`dinlemeye başlandıı port : ${PORT}`);
-    });
-}).catch((error)=>{
-    console.log("HATA : database oluşamadı\n" + error);
 });
