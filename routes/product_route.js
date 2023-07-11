@@ -1,8 +1,9 @@
 const express = require("express");
+const Product = require("../models/product_model")
 
 const router = express.Router();
 //get 
-app.get("/product", async(request,response)=>{
+router.get("/", async(request,response)=>{
     try{
         const products = await Product.find({});
         response.status(200).json(products);
@@ -12,7 +13,7 @@ app.get("/product", async(request,response)=>{
 });
 
 //get details
-app.get("/product/:id",async(request,response)=>{
+router.get("/:id",async(request,response)=>{
     try {
         const {id} = request.params;
         const products = await Product.findById(id);
@@ -24,7 +25,7 @@ app.get("/product/:id",async(request,response)=>{
 });
 
 //post
-app.post("/product",async(request,response)=>{
+router.post("/",async(request,response)=>{
     try {
         const product = await Product.create(request.body);
         response.status(200).json(product);
@@ -35,7 +36,7 @@ app.post("/product",async(request,response)=>{
 });
 
 //update 
-app.put("/product/:id",async(request,response)=>{
+router.put("/:id",async(request,response)=>{
     try {
         const {id} = request.params;
         const product = await Product.findByIdAndUpdate(id,request.body);
@@ -51,7 +52,7 @@ app.put("/product/:id",async(request,response)=>{
 });
 
 //delete
-app.delete("/product/:id",async(request,response)=>{
+router.delete("/:id",async(request,response)=>{
     try {
         const {id} = request.params;
         const product = await Product.findByIdAndDelete(id);
@@ -64,3 +65,5 @@ app.delete("/product/:id",async(request,response)=>{
         response.status(500).json({message:"hatalı istek"});
     }
 });
+
+module.exports = router;
